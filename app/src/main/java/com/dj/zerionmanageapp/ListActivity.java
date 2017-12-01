@@ -1,6 +1,5 @@
 package com.dj.zerionmanageapp;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -11,46 +10,51 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ListActivity extends AppCompatActivity {
     ListView listView;
     ArrayAdapter<String> arrayAdapter;
     ArrayList<String> ids;
     public static ArrayList<DetailsModel> items;
-    ZerionAPI zerionAPI = new ZerionAPI();
-    ZerionAPI serviceDetails;
+    API api = new API();
+    API serviceDetails;
     String access_token;
+    private ProgressBar progressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-
-        listView = (ListView) findViewById(R.id.list_view);
+        listView = findViewById(R.id.list_view);
+        progressBar = findViewById(R.id.progressBar);
         items = new ArrayList<>();
 
         Intent intent = getIntent();
         if (intent.hasExtra("access_token")) {
             access_token = intent.getStringExtra("access_token");
-            zerionAPI.generateIdURL(access_token);
+            api.generateIdURL(access_token);
             new generateData().execute();
         }
     }
 
     private class generateData extends AsyncTask<Void, Void, Void> {
 
-        private ProgressDialog progressDialog;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar.setVisibility(View.VISIBLE);
+        }
 
         @Override
         protected Void doInBackground(Void... params) {
-            zerionAPI.getResponse();
-            ids = zerionAPI.getIdFromResponse();
+            api.getResponse();
+            ids = api.getIdFromResponse();
             for (int i = 0; i < ids.size(); i++) {
-                serviceDetails = new ZerionAPI();
+                serviceDetails = new API();
                 serviceDetails.generateDetailURL(access_token, i);
                 serviceDetails.getResponse();
                 DetailsModel detailsModel = serviceDetails.getItemDetailFromResponse();
@@ -60,17 +64,11 @@ public class ListActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPreExecute() {
-            progressDialog = ProgressDialog.show(ListActivity.this, null, "Loading, Please Wait...");
-            super.onPreExecute();
-        }
-
-        @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
+            progressBar.setVisibility(View.GONE);
             arrayAdapter = new ArrayAdapter<>(ListActivity.this, android.R.layout.simple_list_item_1, ids);
             listView.setAdapter(arrayAdapter);
-            progressDialog.dismiss();
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override

@@ -5,6 +5,14 @@
     android:layout_height="match_parent"
     tools:context="com.dj.zerionmanageapp.ListActivity">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"/>
+
     <ListView
         android:id="@+id/list_view"
         android:layout_width="match_parent"

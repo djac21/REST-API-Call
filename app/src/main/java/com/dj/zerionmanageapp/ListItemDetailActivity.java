@@ -29,11 +29,11 @@ public class ListItemDetailActivity extends AppCompatActivity {
         dateString = getIntent().getStringExtra("date");
         imageString = getIntent().getStringExtra("image");
 
-        detailName = (TextView) findViewById(R.id.detail_name);
-        detailAge = (TextView) findViewById(R.id.detail_age);
-        detailNumber = (TextView) findViewById(R.id.detail_number);
-        detailDate = (TextView) findViewById(R.id.detail_date);
-        detailImage = (ImageView) findViewById(R.id.detail_image);
+        detailName = findViewById(R.id.detail_name);
+        detailAge = findViewById(R.id.detail_age);
+        detailNumber = findViewById(R.id.detail_number);
+        detailDate = findViewById(R.id.detail_date);
+        detailImage = findViewById(R.id.detail_image);
 
         detailName.setText("Name: " + nameString);
         detailAge.setText("Age: " + ageString);

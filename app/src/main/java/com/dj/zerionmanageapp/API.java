@@ -12,13 +12,13 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ZerionAPI {
+public class API {
 
     private String url;
     private ArrayList<String> idList;
     private StringBuilder builder;
 
-    public ZerionAPI() {
+    public API() {
         String user_id = "3641286";
         String profile_id = "470196";
         url = "https://app.iformbuilder.com/exzact/api/profiles/" + profile_id + "/pages/" + user_id + "/records";
